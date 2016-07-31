@@ -4,6 +4,7 @@
 #include <string>
 #include <functional>
 #include <algorithm>
+#include <sstream>
 
 static inline std::string & ltrim(std::string & s) {
     s.erase(s.begin(),
@@ -26,6 +27,13 @@ std::string & surround_by(std::string & s, std::string & surrounding) {
     s.append(surrounding);
 
     return s;
+}
+
+template <typename T>
+static inline std::string str(T t) {
+    std::ostringstream strs;
+    strs << t;
+    return strs.str();
 }
 
 #endif

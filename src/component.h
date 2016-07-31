@@ -25,11 +25,11 @@ public:
         static std::vector<Capatibility> getCapatibilities() {                 \
             return Capatibility::from_strings({__VA_ARGS__});                  \
         }                                                                      \
-    };
+    };                                                                         \
+    DECLARE_DEFAULT_AGGREGATION(name, average, __VA_ARGS__)
 
 class Component {
 public:
-    std::string read(Capatibility c) { return read(c.identifier); }
     std::string read(std::string method) {
         try {
             return methods.at(method)->read();
@@ -38,10 +38,6 @@ public:
                           << device_node << std::endl;
             std::exit(EXIT_FAILURE);
         }
-    }
-
-    int write(Capatibility c, std::string value) {
-        return write(c.identifier, value);
     }
 
     int write(std::string method, std::string value) {

@@ -9,6 +9,8 @@ class Capatibility {
 public:
     std::string identifier;
 
+    operator std::string() const { return identifier; }
+
     static std::vector<Capatibility>
     from_strings(std::vector<std::string> strings) {
         std::vector<Capatibility> ret;

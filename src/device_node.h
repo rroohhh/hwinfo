@@ -49,7 +49,7 @@ public:
             std::string contents((std::istreambuf_iterator<char>(in)),
                                  std::istreambuf_iterator<char>());
             in.close();
-            return (contents);
+            return trim(contents);
 
         } catch(...) {
             throw InvalidRead(std::string("invalid read at: ") + path + method);
