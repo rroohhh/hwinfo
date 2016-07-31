@@ -8,6 +8,7 @@
 
 #include <unordered_map>
 #include "component.h"
+#include "component_array.h"
 
 #define DECLARE_NODES(type, ...)                                               \
     struct __ignore##type {                                                    \
@@ -15,13 +16,12 @@
     } __ignore_##type;
 
 namespace Nodes {
-    std::unordered_map<std::string, std::pair<std::vector<Capatibility>,
-                                              std::vector<Component *>>> nodes;
+    std::unordered_map<std::string, ComponentArray> nodes;
 
     template <typename T>
     void addNode(std::string name, std::string path) {
-        nodes[name].first = T::getCapatibilities();
-        nodes[name].second.push_back(new T(path));
+        nodes[name].capatibilities = T::getCapatibilities();
+        nodes[name].components.push_back(new T(path));
     }
 
     template <typename T>
