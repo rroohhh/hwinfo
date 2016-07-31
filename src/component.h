@@ -15,7 +15,7 @@ public:
 };
 
 #define DECLARE_COMPONENT(name, ...)                                           \
-    class name : public Component, public CapatibilityProvider<name> {    \
+    class name : public Component, public CapatibilityProvider<name> {         \
     public:                                                                    \
         name(DeviceNode device_node) : Component(device_node) {                \
             this->device_node = device_node;                                   \
@@ -30,14 +30,28 @@ public:
 class Component {
 public:
     std::string read(Capatibility c) { return read(c.identifier); }
-    std::string read(std::string method) { return methods[method]->read(); }
+    std::string read(std::string method) {
+        try {
+            return methods.at(method)->read();
+        } catch(const std::out_of_range & oor) {
+            Logger::err() << "No method named " << method << " for "
+                          << device_node << std::endl;
+            std::exit(EXIT_FAILURE);
+        }
+    }
 
     int write(Capatibility c, std::string value) {
         return write(c.identifier, value);
     }
 
     int write(std::string method, std::string value) {
-        return methods[method]->write(value);
+        try {
+            return methods[method]->write(value);
+        } catch(const std::out_of_range & oor) {
+            Logger::err() << "No method named " << method << " for "
+                          << device_node << std::endl;
+            std::exit(EXIT_FAILURE);
+        }
     }
 
 protected:

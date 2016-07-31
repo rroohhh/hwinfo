@@ -11,9 +11,10 @@ int main(int argc, char ** argv) {
     // std::vector<std::string>(battery_nodes) << std::endl;
 
     for(const auto & node : Nodes::nodes) {
-        Logger::info() << node.first << ": " << node.second.capatibilities << std::endl;
+        Logger::info() << node.first << ": " << node.second.capatibilities
+                       << std::endl;
 
-        for(const auto & method : node.second.capatibilities)  {
+        for(const auto & method : node.second.capatibilities) {
             Logger::info() << "\t" << method << ": " << std::endl;
             for(const auto & component : node.second.components) {
                 Logger::info() << "\t\t" << component->read(method);

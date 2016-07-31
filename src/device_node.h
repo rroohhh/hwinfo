@@ -76,8 +76,15 @@ public:
         return -1;
     }
 
+    friend std::ostream & operator<<(std::ostream & out, const DeviceNode & d);
+
 private:
     std::string path;
 };
+
+std::ostream & operator<<(std::ostream & out, const DeviceNode & d) {
+    out << d.path;
+    return out;
+}
 
 #endif
