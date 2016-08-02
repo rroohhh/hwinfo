@@ -18,25 +18,16 @@ int main(int argc, char ** argv) {
                        << std::endl;
         for(const auto & method : node.second.capatibilities) {
             Logger::info() << "\t" << method << ": "
-                           << Aggregator::aggregate(node.first, method,
-                                                    node.second.components)
+                           << (node.second.components.size() == 1
+                                   ? ""
+                                   : Aggregator::aggregate(
+                                         node.first, method,
+                                         node.second.components))
                            << std::endl;
             for(const auto & component : node.second.components) {
                 Logger::info() << "\t\t" << component->read(method)
                                << std::endl;
             }
-        }
-    }
-
-    Logger::info() << "aggregation: " << std::endl;
-    for(const auto & component : Aggregator::aggregators) {
-        Logger::info() << component.first << std::endl;
-        for(const auto & method : component.second) {
-            Logger::info() << method.first << ": "
-                           << Aggregator::aggregate(
-                                  component.first, method.first,
-                                  Nodes::nodes.at(component.first).components)
-                           << std::endl;
         }
     }
 }
