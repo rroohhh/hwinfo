@@ -50,6 +50,8 @@ public:
         }
     }
 
+    DeviceNode device_node;
+
 protected:
     Component(DeviceNode device_node) : device_node(device_node) {}
 
@@ -60,8 +62,6 @@ protected:
     void add_methods(std::vector<std::string> methods) {
         for(auto const & method : methods) { add_method(method); }
     }
-
-    DeviceNode device_node;
 
     std::vector<Capatibility> capatibilities;
 

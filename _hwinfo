@@ -1,0 +1,15 @@
+#compdef hwinfo
+
+_hwinfo() {
+	local context curcontext="$curcontext" state line
+	typeset -A opt_args
+	local -a commands
+	commands_tmp="$(hwinfo --complete $words)"
+	commands=( "${(ps:\n:)commands_tmp}" )
+
+	_describe -t commands 'commands' commands
+
+	return 0
+}
+
+_hwinfo

@@ -7,6 +7,7 @@
 #define _ARGS_H
 
 #include "aggregator.h"
+#include "complete.h"
 #include "nodes.h"
 #include "util.h"
 #include <iostream>
@@ -24,17 +25,6 @@ void dump_component(const Component & component,
 
 void dump_node(const ComponentArray & node, const std::string prefix1 = "",
                const std::string prefix2 = "") {
-    // for(const auto & method : node.capatibilities) {
-    //     Logger::info() << "\t" << method << ": "
-    //                    << (node.components.size() == 1
-    //                            ? ""
-    //                            : Aggregator::aggregate(name, method,
-    //                                                    node.components))
-    //                    << std::endl;
-    //     for(const auto & component : node.components) {
-    //         Logger::info() << "\t\t" << component->read(method) << std::endl;
-    //     }
-    // }
     int i = 0;
 
     for(const auto & component : node.components) {
@@ -57,39 +47,53 @@ void parse_args(const std::vector<std::string> & arguments) {
     if(args.size() == 0) {
         dump_nodes();
     } else {
-        // get the node
-        auto node = Nodes::nodes.find(args.at(0));
-        if(node == Nodes::nodes.end()) {
-            std::cerr << "node " << args.at(0) << " not found" << std::endl;
-        } else if(args.size() == 1) {
-            dump_node(node->second, "", "\t");
+        if(args.at(0) == "--complete") {
+            complete(std::vector<std::string>(args.begin() + 1, args.end()));
         } else {
-            try {
-                unsigned int index = std::stoi(args.at(1));
 
-                if(node->second.components.size() > index) {
-                    if(args.size() == 2) {
-                        dump_component(*node->second.components.at(index),
-                                       node->second.capatibilities);
-                    } else {
-                        if(args.size() == 3) {
-                            std::cout
-                                << node->second.components.at(index)->read(
-                                    args.at(2));
+            // get the node
+            auto node = Nodes::nodes.find(args.at(0));
+            if(node == Nodes::nodes.end()) {
+                std::cerr << "node " << args.at(0) << " not found" << std::endl;
+            } else if(args.size() == 1) {
+                dump_node(node->second, "", "\t");
+            } else {
+                try {
+                    unsigned int index = std::stoi(args.at(1));
+
+                    if(node->second.components.size() > index) {
+                        if(args.size() == 2) {
+                            dump_component(*node->second.components.at(index),
+                                           node->second.capatibilities);
                         } else {
-                            node->second.components.at(index)->write(
-                                args.at(2), args.at(3));
+                            if(args.size() == 3) {
+                                std::cout
+                                    << node->second.components.at(index)->read(
+                                        args.at(2));
+                            } else {
+                                node->second.components.at(index)->write(
+                                    args.at(2), args.at(3));
+                            }
                         }
+                    } else {
+                        std::cerr << "no component at index " << index << " of "
+                                  << node->first << std::endl;
                     }
-                } else {
-                    std::cerr << "no component at index " << index << " of "
-                              << node->first << std::endl;
+                } catch(...) {
+                    // std::cout << "hello" << std::endl,
+                    if(node->second.components.size() > 1) {
+                        std::cout
+                            << Aggregator::aggregate(node->first, args.at(1),
+                                                     node->second.components)
+                            << std::endl;
+                    } else if(args.size() == 2) {
+                        std::cout
+                            << node->second.components.at(0)->read(args.at(1));
+                    } else {
+                        node->second.components.at(0)->write(args.at(1),
+                                                             args.at(2));
+                    }
                 }
-            } catch(...) {
-                // std::cout << "hello" << std::endl,
-                std::cout << Aggregator::aggregate(node->first, args.at(1),
-                                                   node->second.components)
-                          << std::endl;
             }
         }
     }
