@@ -25,6 +25,6 @@ namespace Logger {
     std::ostream & err() { return log(*stderr, "E"); }
 
     std::ostream & warn() { return log(*stdout, "W"); }
-};
+}
 
 #endif

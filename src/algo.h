@@ -29,7 +29,7 @@ namespace algo {
 
     template <typename T>
     constexpr auto average(T data) {
-        typename value_type<T>::type tmp;
+        typename value_type<T>::type tmp{};
         unsigned long long count = 0;
         for(auto elem : data) {
             tmp += elem;
@@ -43,7 +43,7 @@ namespace algo {
 
     template <typename T>
     constexpr auto sum(T data) {
-        typename value_type<T>::type tmp;
+        typename value_type<T>::type tmp{};
         for(auto elem : data) { tmp += elem; }
 
         return tmp;

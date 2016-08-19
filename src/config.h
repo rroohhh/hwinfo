@@ -15,12 +15,18 @@ DECLARE_COMPONENT(battery, "alarm", "capacity", "capacity_level", "cycle_count",
                   "manufacturer", "model_name", "power_now", "present",
                   "serial_number", "status", "technology", "type",
                   "voltage_min_design", "voltage_now")
+
+DECLARE_AGGREGATION(battery, "energy_full", sum)
+
+DECLARE_AGGREGATION(battery, "energy_now", sum)
+
 DECLARE_NODES(battery, "/sys/class/power_supply/BAT0",
               "/sys/class/power_supply/BAT1")
 
 DECLARE_COMPONENT(backlight, "actual_brightness", "bl_power", "brightness",
                   "max_brightness", "type")
 DECLARE_NODES(backlight, "/sys/class/backlight/intel_backlight")
+
 
 
 // DECLARE_COMPONENT(battery, "capacity", "capacity_level", "cycle_count")

@@ -6,9 +6,12 @@
 #ifndef _AGGREGATOR_H
 #define _AGGREGATOR_H
 
-#include <unordered_map>
-#include "component.h"
 #include "algo.h"
+#include "component.h"
+#include <unordered_map>
+
+#define PASTE_(x, y, z) x##y##z
+#define PASTE(x, y, z) PASTE_(x, y, z)
 
 typedef std::function<std::string(std::vector<Component *>)> AggregatorFunction;
 
@@ -21,12 +24,12 @@ typedef std::function<std::string(std::vector<Component *>)> AggregatorFunction;
     } __ignoreAA_##type;
 
 #define DECLARE_AGGREGATION(type, method, amethod)                             \
-    struct __ignore##__LINE__##type {                                          \
-        __ignore##__LINE__##type() {                                           \
+    struct PASTE(__ignore, __LINE__, type) {                                   \
+        PASTE(__ignore, __LINE__, type)() {                                    \
             Aggregator::addAggregation(                                        \
                 #type, method, Aggregator::AggregationMethod::amethod);        \
         }                                                                      \
-    } __ignore##__COUNTER##_##type;
+    } PASTE(__ignore, __COUNTER__, type);
 
 namespace Aggregator {
     std::unordered_map<std::string,

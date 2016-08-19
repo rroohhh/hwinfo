@@ -6,9 +6,9 @@
 #ifndef _NODES_H
 #define _NODES_H
 
-#include <unordered_map>
 #include "component.h"
 #include "component_array.h"
+#include <unordered_map>
 
 #define DECLARE_NODES(type, ...)                                               \
     struct __ignore##type {                                                    \

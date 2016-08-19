@@ -3,8 +3,8 @@
 
 #include "capatibility.h"
 #include "device_method.h"
-#include <vector>
 #include <unordered_map>
+#include <vector>
 
 template <typename T>
 class CapatibilityProvider {
@@ -30,22 +30,22 @@ public:
 
 class Component {
 public:
-    std::string read(std::string method) {
+    std::string read(std::string method) const {
         try {
             return methods.at(method)->read();
         } catch(const std::out_of_range & oor) {
-            Logger::err() << "No method named " << method << " for "
-                          << device_node << std::endl;
+            std::cerr << "No method named " << method << " for " << device_node
+                      << std::endl;
             std::exit(EXIT_FAILURE);
         }
     }
 
     int write(std::string method, std::string value) {
         try {
-            return methods[method]->write(value);
+            return methods.at(method)->write(value);
         } catch(const std::out_of_range & oor) {
-            Logger::err() << "No method named " << method << " for "
-                          << device_node << std::endl;
+            std::cerr << "No method named " << method << " for " << device_node
+                      << std::endl;
             std::exit(EXIT_FAILURE);
         }
     }
