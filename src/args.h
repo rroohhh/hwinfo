@@ -69,7 +69,8 @@ void parse_args(const std::vector<std::string> & arguments) {
                             if(args.size() == 3) {
                                 std::cout
                                     << node->second.components.at(index)->read(
-                                        args.at(2));
+                                           args.at(2))
+                                    << std::endl;
                             } else {
                                 node->second.components.at(index)->write(
                                     args.at(2), args.at(3));
@@ -80,7 +81,6 @@ void parse_args(const std::vector<std::string> & arguments) {
                                   << node->first << std::endl;
                     }
                 } catch(...) {
-                    // std::cout << "hello" << std::endl,
                     if(node->second.components.size() > 1) {
                         std::cout
                             << Aggregator::aggregate(node->first, args.at(1),
@@ -88,7 +88,8 @@ void parse_args(const std::vector<std::string> & arguments) {
                             << std::endl;
                     } else if(args.size() == 2) {
                         std::cout
-                            << node->second.components.at(0)->read(args.at(1));
+                            << node->second.components.at(0)->read(args.at(1))
+                            << std::endl;
                     } else {
                         node->second.components.at(0)->write(args.at(1),
                                                              args.at(2));

@@ -4,7 +4,7 @@ _hwinfo() {
 	local context curcontext="$curcontext" state line
 	typeset -A opt_args
 	local -a commands
-	commands_tmp="$(hwinfo --complete $words)"
+	commands_tmp="$(hwinfo --complete $CURRENT $words)"
 	commands=( "${(ps:\n:)commands_tmp}" )
 
 	_describe -t commands 'commands' commands

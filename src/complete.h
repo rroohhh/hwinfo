@@ -32,60 +32,36 @@ void complete_capatibilities(std::vector<Capatibility> capatibilities) {
     }
 }
 
+bool should_complete(const ComponentArray & node, const std::string & word) {
+    int count   = 0;
+    int perfect = -1;
+
+    for(const auto & capatibility : node.capatibilities) {
+        if(std::string(capatibility).find(word) == 0) {
+            count++;
+
+            if(std::string(capatibility) == word) perfect = 0;
+        }
+    }
+
+    return count > 1 || perfect == -1;
+}
+
 void complete(const std::vector<std::string> & args) {
-    if(args.size() == 1) {
+    int current = std::stoi(args.at(0));
+
+    if(current == 2) {
         complete_nodes();
-    } else if(args.size() == 2) {
-        try {
-            auto node = Nodes::nodes.at(args.at(1));
+    } else if(current == 3) {
+        auto node = Nodes::nodes.at(args.at(2));
 
-            if(node.components.size() > 1) {
-                complete_components(node.components);
-            }
+        if(node.components.size() > 1) { complete_components(node.components); }
 
-            complete_capatibilities(node.capatibilities);
-        } catch(...) { complete_nodes(); }
-    } else if(args.size() == 3) {
-        auto node = Nodes::nodes.at(args.at(1));
+        complete_capatibilities(node.capatibilities);
+    } else if(current == 4) {
+        if(is_number(args.at(3))) {
+            auto node = Nodes::nodes.at(args.at(2));
 
-        try {
-            std::stoi(args.at(2));
-            complete_capatibilities(node.capatibilities);
-        } catch(...) {
-            int count   = 0;
-            int perfect = -1;
-
-            for(const auto & capatibility : node.capatibilities) {
-                if(std::string(capatibility).find(args.at(2)) == 0) {
-                    count++;
-
-                    if(std::string(capatibility) == args.at(2)) perfect = 0;
-                }
-            }
-
-            if(count > 1 || perfect == -1) {
-                complete_capatibilities(node.capatibilities);
-            }
-        }
-    } else if(args.size() == 4) {
-        try {
-            std::stoi(args.at(2));
-        } catch(...) { return; }
-
-        auto node = Nodes::nodes.at(args.at(1));
-
-        int count   = 0;
-        int perfect = -1;
-
-        for(const auto & capatibility : node.capatibilities) {
-            if(std::string(capatibility).find(args.at(3)) == 0) {
-                count++;
-
-                if(std::string(capatibility) == args.at(3)) perfect = 0;
-            }
-        }
-
-        if(count > 1 || perfect == -1) {
             complete_capatibilities(node.capatibilities);
         }
     }

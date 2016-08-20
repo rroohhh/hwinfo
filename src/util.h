@@ -6,6 +6,7 @@
 #ifndef _UTIL_H
 #define _UTIL_H
 
+#include <algorithm>
 #include <iostream>
 #include <iterator>
 #include <vector>
@@ -18,6 +19,12 @@ std::ostream & operator<<(std::ostream & out, const std::vector<T> & v) {
         out << "\b\b]";
     }
     return out;
+}
+
+bool is_number(const std::string & s) {
+    return !s.empty() && std::find_if(s.begin(), s.end(), [](char c) {
+                             return !std::isdigit(c);
+                         }) == s.end();
 }
 
 template <typename T, typename U, typename size_type>
