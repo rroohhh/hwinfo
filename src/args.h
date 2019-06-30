@@ -14,9 +14,9 @@
 #include <string>
 #include <vector>
 
-void dump_component(const Component & component,
+void dump_component(const Component &                 component,
                     const std::vector<Capatibility> & capatibilities,
-                    const std::string prefix = "") {
+                    const std::string                 prefix = "") {
     for(const auto & method : capatibilities) {
         std::cout << prefix << method << " " << component.read(method)
                   << std::endl;
@@ -40,6 +40,71 @@ void dump_nodes() {
     }
 }
 
+bool influx_should_quote(std::string s) {
+    if(s == "t" or s == "T" or s == "true" or s == "True" or s == "TRUE") {
+        return false;
+    }
+
+    if(s == "f" or s == "T" or s == "false" or s == "False" or s == "FALSE") {
+        return false;
+    }
+
+    if(s == "f" or s == "T" or s == "false" or s == "False" or s == "FALSE") {
+        return false;
+    }
+
+    std::stringstream ss;
+    ss << s;
+
+    float num = 0;
+
+    ss >> num;
+
+    if(ss.good()) {
+        return true;
+    } else if(num == 0 && s[0] != '0') {
+        return true;
+    } else {
+        return false;
+    }
+
+    return true;
+}
+
+void dump_influx() {
+    for(const auto & node : Nodes::nodes) {
+        for(const auto & component : node.second.components) {
+            std::cout << node.first << ",device=" << component->device_node
+                      << " ";
+
+            auto capatibilities = node.second.capatibilities;
+
+            std::stringstream ss;
+
+            for(const auto & method : capatibilities) {
+                auto v = component->read(method);
+
+                if(influx_should_quote(v)) {
+                    auto s = std::string("\"");
+                    surround_by(v, s);
+                }
+
+                ss << method << "=" << v << ",";
+            }
+
+            auto s = ss.str();
+
+            // remove the last ','
+            s.pop_back();
+
+            std::cout << s;
+
+            // dump_component(*component, node.second.capatibilities, "");
+            std::cout << std::endl;
+        }
+    }
+}
+
 void parse_args(const std::vector<std::string> & arguments) {
     std::vector<std::string> args(arguments.begin() + 1, arguments.end());
 
@@ -49,6 +114,8 @@ void parse_args(const std::vector<std::string> & arguments) {
     } else {
         if(args.at(0) == "--complete") {
             complete(std::vector<std::string>(args.begin() + 1, args.end()));
+        } else if(args.at(0) == "--influx") {
+            dump_influx();
         } else {
 
             // get the node

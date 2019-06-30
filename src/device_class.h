@@ -3,8 +3,6 @@
 
 #include "component.h"
 
-class DeviceClass {
-
-};
+class DeviceClass {};
 
 #endif

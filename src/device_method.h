@@ -2,9 +2,9 @@
 #define _DEVICE_METHOD_H
 
 #include "device_node.h"
+#include <exception>
 #include <functional>
 #include <string>
-#include <exception>
 
 class DeviceMethod {
 public:
@@ -13,13 +13,13 @@ public:
           write_value(std::bind(&DeviceNode::write, node, path,
                                 std::placeholders::_1)) {}
 
-	std::string read() { return {read_value()}; }
+    std::string read() { return {read_value()}; }
 
     int write(std::string value) { return write_value({value}); }
 
 private:
     std::function<std::string(void)> read_value;
-    std::function<int(std::string)> write_value;
+    std::function<int(std::string)>  write_value;
 };
 
 #endif

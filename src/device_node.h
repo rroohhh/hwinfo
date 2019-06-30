@@ -1,10 +1,10 @@
 #ifndef _DEVICE_NODE_H
 #define _DEVICE_NODE_H
 
-#include <string>
+#include "log.h"
 #include <fstream>
 #include <ostream>
-#include "log.h"
+#include <string>
 
 class InvalidRead : public std::exception {
 public:

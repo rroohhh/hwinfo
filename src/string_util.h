@@ -1,10 +1,10 @@
 #ifndef _STRING_UTIL_H
 #define _STRING_UTIL_H
 
-#include <string>
-#include <functional>
 #include <algorithm>
+#include <functional>
 #include <sstream>
+#include <string>
 
 static inline std::string & ltrim(std::string & s) {
     s.erase(s.begin(),
@@ -22,6 +22,7 @@ static inline std::string & rtrim(std::string & s) {
 }
 
 static inline std::string & trim(std::string & s) { return ltrim(rtrim(s)); }
+
 std::string & surround_by(std::string & s, std::string & surrounding) {
     s.insert(0, surrounding);
     s.append(surrounding);

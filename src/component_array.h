@@ -7,11 +7,11 @@
 #ifndef _COMPONENT_ARRAY_H
 #define _COMPONENT_ARRAY_H
 
-#include "component.h"
 #include "capatibility.h"
+#include "component.h"
 
 struct ComponentArray {
-    std::vector<Component *> components;
+    std::vector<Component *>  components;
     std::vector<Capatibility> capatibilities;
 };
 

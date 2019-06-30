@@ -23,14 +23,16 @@ namespace algo {
     };
 
     template <class T>
-    struct value_type<T, typename void_t<typename std::iterator_traits<T>::value_type>::type> {
+    struct value_type<
+        T,
+        typename void_t<typename std::iterator_traits<T>::value_type>::type> {
         typedef typename T::value_type type;
     };
 
     template <typename T>
     constexpr auto average(T data) {
         typename value_type<T>::type tmp{};
-        unsigned long long count = 0;
+        unsigned long long           count = 0;
         for(auto elem : data) {
             tmp += elem;
             count++;

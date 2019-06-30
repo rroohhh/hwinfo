@@ -1,8 +1,8 @@
 #ifndef _CAPATIBILITY_H
 #define _CAPATIBILITY_H
 
-#include <string>
 #include <iostream>
+#include <string>
 #include <vector>
 
 class Capatibility {

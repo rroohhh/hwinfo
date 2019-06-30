@@ -36,7 +36,7 @@ namespace Aggregator {
                        std::unordered_map<std::string, AggregatorFunction>>
         aggregators;
 
-    std::vector<double> parse_all(std::string method,
+    std::vector<double> parse_all(std::string              method,
                                   std::vector<Component *> components) {
         std::vector<double> values;
 
@@ -80,9 +80,9 @@ namespace Aggregator {
         aggregators[component][method] = a;
     }
 
-    void addAggregations(std::string component,
+    void addAggregations(std::string              component,
                          std::vector<std::string> methods,
-                         AggregationMethod amethod) {
+                         AggregationMethod        amethod) {
         for(const auto & method : methods) {
             addAggregation(component, method, amethod);
         }
